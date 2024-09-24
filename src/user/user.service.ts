@@ -14,7 +14,7 @@ export class UserService {
     const data = await this.userRepository.save(user);
     return {
       message: '注册成功',
-      data: {
+      result: {
         id: data.id,
         username: data.username,
       },

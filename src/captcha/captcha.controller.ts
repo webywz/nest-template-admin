@@ -25,6 +25,11 @@ export class CaptchaController {
     const key = `captcha:${Date.now()}`;
     this.redisService.set(key, captcha.text, 300).then(() => {}); // 存储验证码文本，300秒后过期
 
-    return result;
+    return {
+      result: {
+        ...result,
+      },
+      message: '验证码生成完成',
+    };
   }
 }

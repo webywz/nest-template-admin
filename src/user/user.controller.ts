@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiTags } from '@nestjs/swagger';
 import { RegisterUserDto } from './dto/create-user.dto';
@@ -19,9 +19,7 @@ export class UserController {
     if (captchaDate && captchaDate === user.captcha) {
       return await this.userService.register(user);
     } else {
-      return {
-        message: '验证码错误',
-      };
+      throw new BadRequestException('验证码错误');
     }
   }
 }

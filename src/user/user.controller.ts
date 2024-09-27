@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiTags } from '@nestjs/swagger';
-import { RegisterUserDto } from './dto/create-user.dto';
+import { loginDto, RegisterUserDto } from './dto/create-user.dto';
 import { RedisService } from '../config/redis.service';
 
 @ApiTags('user')
@@ -21,5 +21,10 @@ export class UserController {
     } else {
       throw new BadRequestException('验证码错误');
     }
+  }
+
+  @Post('/login')
+  async login(@Body() user: loginDto) {
+    return this.userService.login(user);
   }
 }

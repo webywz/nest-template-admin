@@ -35,3 +35,18 @@ export class RegisterUserDto {
   @ApiPropertyOptional({ description: '用户权限' })
   role?: string;
 }
+export class loginDto {
+  id?: number;
+  @IsNotEmpty({ message: '用户名不能为空' })
+  @ApiProperty({ name: 'username', description: '用户名称' })
+  @IsString()
+  username: string;
+
+  @IsNotEmpty({ message: '密码不能为空' })
+  @MinLength(6, {
+    message: () => `密码长度为6位`,
+  })
+  @ApiProperty({ name: 'password', description: '用户密码' })
+  @IsString()
+  password: string;
+}

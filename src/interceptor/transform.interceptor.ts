@@ -27,6 +27,7 @@ export class TransformInterceptor<T>
       map((data) => {
         // 确保返回的data包含message
         const message = data.message || '请求成功'; // 使用默认消息
+        console.log(message);
         return {
           code: 0,
           success: true,
@@ -35,6 +36,7 @@ export class TransformInterceptor<T>
         };
       }),
       catchError((error) => {
+        console.log(error);
         let message = '';
         if (isArray(error.response.message)) {
           message = error.response.message[0];

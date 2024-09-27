@@ -15,7 +15,14 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/doc', app, document);
   app.useGlobalInterceptors(new TransformInterceptor());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // 自动剔除 DTO 中未定义的属性
+      forbidNonWhitelisted: true, // 如果有不允许的属性会抛出错误
+      transform: true, // 自动转换请求对象为 DTO 类型
+      disableErrorMessages: false, // 确保错误消息被启用
+    }),
+  );
   await app.listen(3000);
 }
 bootstrap().then(() => {

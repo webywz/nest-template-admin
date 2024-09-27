@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { Observable, map, catchError, throwError } from 'rxjs';
 import { ResponseDto } from './dto/response.dto';
+import { isArray } from 'class-validator';
 
 @Injectable()
 export class TransformInterceptor<T>
@@ -22,9 +23,6 @@ export class TransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<ResponseDto<T>> {
-    const request = context.switchToHttp().getRequest();
-    console.log(request);
-    // const customMessage = request.body.customMessage || 'Request successful'; // 从请求体中获取自定义消息
     return next.handle().pipe(
       map((data) => {
         // 确保返回的data包含message
@@ -37,19 +35,32 @@ export class TransformInterceptor<T>
         };
       }),
       catchError((error) => {
+        let message = '';
+        if (isArray(error.response.message)) {
+          message = error.response.message[0];
+        } else {
+          message = error.response.message;
+        }
         let responseDto: ResponseDto<any>;
         if (error instanceof HttpException) {
           responseDto = {
             code: 500,
             success: false,
-            message: error.message,
+            message: message || error.message,
           };
         } else if (error instanceof BadRequestException) {
           responseDto = {
             code: 500,
             data: null,
             success: false,
-            message: error.message,
+            message: message || error.message,
+          };
+        } else {
+          responseDto = {
+            code: 500,
+            data: null,
+            success: false,
+            message: message || error.message,
           };
         }
         // const responseDto: ResponseDto<any> = {

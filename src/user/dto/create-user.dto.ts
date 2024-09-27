@@ -1,14 +1,17 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, Length, MinLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateUserDto {}
 export class RegisterUserDto {
-  @IsNotEmpty({ message: '名称不能为空' })
+  @IsNotEmpty({ message: '用户名不能为空' })
   @ApiProperty({ name: 'username', description: '用户名称' })
   @IsString()
   username: string;
 
   @IsNotEmpty({ message: '密码不能为空' })
+  @MinLength(6, {
+    message: () => `密码长度为6位`,
+  })
   @ApiProperty({ name: 'password', description: '用户密码' })
   @IsString()
   password: string;
@@ -24,11 +27,11 @@ export class RegisterUserDto {
   captcha: string;
 
   @ApiPropertyOptional({ description: '用户邮箱' })
-  email: string;
+  email?: string;
 
   @ApiPropertyOptional({ description: '用户手机' })
-  phone: number;
+  phone?: number;
 
   @ApiPropertyOptional({ description: '用户权限' })
-  role: string;
+  role?: string;
 }

@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Role } from '../dto/create-user.dto';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -16,6 +17,10 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.USER, // 默认角色为普通用户
+  })
   role: string;
 }

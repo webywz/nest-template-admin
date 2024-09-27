@@ -21,6 +21,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: JwtPayload) {
     // 可以在这里添加用户验证逻辑，返回用户信息
-    return { username: payload.username, id: payload.id };
+    return { username: payload.username, id: payload.id, role: payload.role };
   }
 }

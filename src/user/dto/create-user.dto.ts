@@ -37,6 +37,7 @@ export class RegisterUserDto {
 }
 export class loginDto {
   id?: number;
+  role?: string;
   @IsNotEmpty({ message: '用户名不能为空' })
   @ApiProperty({ name: 'username', description: '用户名称' })
   @IsString()
@@ -49,4 +50,10 @@ export class loginDto {
   @ApiProperty({ name: 'password', description: '用户密码' })
   @IsString()
   password: string;
+}
+
+export enum Role {
+  ADMIN = 'admin',
+  USER = 'user',
+  MODERATOR = 'moderator',
 }
